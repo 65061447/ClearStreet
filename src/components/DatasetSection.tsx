@@ -19,7 +19,7 @@ export const DatasetSection = () => {
             <Card className="shadow-card text-center">
               <CardContent className="pt-6">
                 <Database className="h-12 w-12 text-primary mx-auto mb-3" />
-                <p className="text-4xl font-bold text-card-foreground mb-2">8</p>
+                <p className="text-4xl font-bold text-card-foreground mb-2">58</p>
                 <p className="text-muted-foreground">Columns</p>
               </CardContent>
             </Card>
@@ -49,15 +49,15 @@ export const DatasetSection = () => {
               <ul className="space-y-3">
                 <li className="flex items-start gap-2">
                   <div className="w-2 h-2 rounded-full bg-primary mt-2"></div>
-                  <span className="text-muted-foreground">ปริมาณขยะเฉลี่ยต่อวัน (Average Daily Waste)</span>
+                  <span className="text-muted-foreground">ความหนาแน่นของประชากร (Population Density)</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <div className="w-2 h-2 rounded-full bg-primary mt-2"></div>
-                  <span className="text-muted-foreground">ค่าประมาณการปริมาณขยะ (Estimated Daily Waste)</span>
+                  <span className="text-muted-foreground">ประชากร (Population)</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <div className="w-2 h-2 rounded-full bg-primary mt-2"></div>
-                  <span className="text-muted-foreground">ปัจจัยความแปรปรวน (Variation Factor)</span>
+                  <span className="text-muted-foreground">ขนาดของพื้นที่ (area_dimension)</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <div className="w-2 h-2 rounded-full bg-primary mt-2"></div>
