@@ -1,7 +1,26 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart3, PieChart, TrendingUp, MapPin } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useState } from "react";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
 export const DashboardPreview = () => {
+  const [selectedDistrict, setSelectedDistrict] = useState<string>("");
+  const [selectedYear, setSelectedYear] = useState<string>("");
+
+  const districts = [
+    "เขตบางกอกน้อย",
+    "เขตพระนคร",
+    "เขตบางกอกใหญ่",
+    "เขตคลองสาน",
+    "เขตธนบุรี",
+    "เขตบางรัก",
+    "เขตปทุมวัน",
+    "เขตสาทร"
+  ];
+
+  const years = ["2024", "2023", "2022", "2021", "2020"];
+
   const topDistricts = [
     { name: "เขตบางกอกน้อย", value: "1,371,330", rank: 1 },
     { name: "เขตพระนคร", value: "1,177,848", rank: 2 },
@@ -9,6 +28,18 @@ export const DashboardPreview = () => {
     { name: "เขตคลองสาน", value: "1,100,763", rank: 4 },
     { name: "เขตธนบุรี", value: "1,016,723", rank: 5 }
   ];
+
+  // Generate 7-day prediction data
+  const generatePredictionData = () => {
+    const baseValue = Math.floor(Math.random() * 50000) + 150000;
+    return Array.from({ length: 7 }, (_, i) => ({
+      day: `Day ${i + 1}`,
+      predicted: Math.floor(baseValue + Math.random() * 20000 - 10000),
+      historical: Math.floor(baseValue + Math.random() * 15000 - 7500)
+    }));
+  };
+
+  const predictionData = generatePredictionData();
 
   const metrics = [
     { label: "Total Waste", value: "34.5M", icon: BarChart3, color: "text-primary" },
@@ -67,19 +98,93 @@ export const DashboardPreview = () => {
             </CardContent>
           </Card>
 
-          {/* Chart Placeholder */}
+          {/* Prediction Filters */}
           <Card className="shadow-card">
             <CardHeader>
-              <CardTitle>Waste Volume Trends</CardTitle>
+              <CardTitle>7-Day Waste Prediction</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-64 bg-gradient-to-br from-primary/5 to-secondary/5 rounded-lg flex items-center justify-center">
-                <div className="text-center">
-                  <BarChart3 className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">Interactive chart visualization</p>
-                  <p className="text-sm text-muted-foreground">Displaying waste trends over time</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground">Select District</label>
+                  <Select value={selectedDistrict} onValueChange={setSelectedDistrict}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Choose a district" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {districts.map((district) => (
+                        <SelectItem key={district} value={district}>
+                          {district}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground">Select Year</label>
+                  <Select value={selectedYear} onValueChange={setSelectedYear}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Choose a year" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {years.map((year) => (
+                        <SelectItem key={year} value={year}>
+                          {year}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
+
+              {selectedDistrict && selectedYear ? (
+                <div className="space-y-4">
+                  <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+                    <p className="text-sm text-foreground">
+                      Showing predictions for <span className="font-bold text-primary">{selectedDistrict}</span> in <span className="font-bold text-primary">{selectedYear}</span>
+                    </p>
+                  </div>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={predictionData}>
+                      <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                      <XAxis dataKey="day" className="text-xs" />
+                      <YAxis className="text-xs" />
+                      <Tooltip 
+                        contentStyle={{ 
+                          backgroundColor: "hsl(var(--card))", 
+                          border: "1px solid hsl(var(--border))",
+                          borderRadius: "8px"
+                        }}
+                      />
+                      <Legend />
+                      <Line 
+                        type="monotone" 
+                        dataKey="predicted" 
+                        stroke="hsl(var(--primary))" 
+                        strokeWidth={2}
+                        name="Predicted Waste (kg)"
+                      />
+                      <Line 
+                        type="monotone" 
+                        dataKey="historical" 
+                        stroke="hsl(var(--secondary))" 
+                        strokeWidth={2}
+                        strokeDasharray="5 5"
+                        name="Historical Average (kg)"
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              ) : (
+                <div className="h-64 bg-gradient-to-br from-primary/5 to-secondary/5 rounded-lg flex items-center justify-center">
+                  <div className="text-center">
+                    <BarChart3 className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                    <p className="text-muted-foreground">Select a district and year to view predictions</p>
+                    <p className="text-sm text-muted-foreground">7-day waste volume forecast</p>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
