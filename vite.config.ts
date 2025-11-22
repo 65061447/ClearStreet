@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => ({
     port: 8081,
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
-    base: mode === "production" ? "/ClearStreet/" : "/",
+    base: mode ="/ClearStreet",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
