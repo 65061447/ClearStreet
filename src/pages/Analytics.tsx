@@ -46,7 +46,7 @@ const Analytics = () => {
       {/* Header */}
       <header className="bg-gradient-eco text-white py-6 shadow-lg">
         <div className="container mx-auto px-4">
-          <Link to="/ClearStreet/">
+          <Link to="/">
             <Button variant="ghost" className="text-white hover:bg-white/20 mb-4">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Home
