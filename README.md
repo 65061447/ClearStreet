@@ -4,70 +4,133 @@
 
 **URL**: https://65061447.github.io/ClearStreet/
 
-## How can I edit this code?
+## CLEAR STREET – Smart City Waste Prediction System
 
-There are several ways of editing your application.
+CLEAR STREET is a smart city initiative designed to **predict daily waste generation** in Bangkok using data analytics and machine learning.  
+The system improves waste management efficiency, supports policy planning, and reduces environmental impact through accurate forecasting.
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/f58fc2b7-83be-41bc-af87-2aa0401ba43a) and start prompting.
+## 📌 Problem Statement
 
-Changes made via Lovable will be committed automatically to this repo.
+Bangkok currently faces several waste management challenges:
 
-**Use your preferred IDE**
+### 1. Massive Daily Waste Volume  
+- Producing **8,700–10,000 tons/day**, with an increasing trend.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 2. Inefficient Sorting & Disposal  
+- Landfills and incinerators cannot process the daily waste volume fast enough.  
+- Leads to overflow and environmental impact.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### 3. Poor Collection Planning  
+- Waste amount varies by **district, weekday, holidays, and festivals**.  
+- Results in misaligned routes, overloaded collection points, and increased costs.
 
-Follow these steps:
+---
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 🎯 Project Goals & Benefits
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- Optimize **waste collection schedules**  
+- Adapt routes for **holidays and festivals**  
+- Improve **resource management**  
+- Support **data-driven policy decisions**  
+- Reduce **environmental impact**
 
-# Step 3: Install the necessary dependencies.
-npm i
+---
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## 📊 Dataset Overview
 
-**Edit a file directly in GitHub**
+Dataset includes **daily waste generation** from multiple Bangkok districts.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+**Details:**
+- **Rows:** 182,651  
+- **Columns:** 8  
+- Includes daily average waste, variance, adjusted waste, district info, etc.
 
-**Use GitHub Codespaces**
+**Sources:**
+- Rocket Media Lab — Bangkok Waste Database  
+- Kaggle — Garbage Classification Dataset  
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+## 🛠️ Data Preparation
 
-This project is built with:
+### ✔ Cleaning  
+- Original yearly/district-based tables transformed into **daily-level tabular format**.  
+- Standardized units to **tons/day**.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### ✔ Transformation  
+- Added **holiday / festival indicators**  
+- Converted tables for **Time Series Analysis**
 
-## How can I deploy this project?
+### ✔ One-Hot Encoding  
+- District column converted into binary indicators for ML models.
 
-Simply open [Lovable](https://lovable.dev/projects/f58fc2b7-83be-41bc-af87-2aa0401ba43a) and click on Share -> Publish.
+---
 
-## Can I connect a custom domain to my Lovable project?
+## 🔍 Analytics Types
 
-Yes, you can!
+### **1. Descriptive Analytics — What happened?**  
+- Daily & district-level waste summaries  
+- Example: Klong San (2012) → **125 tons/day average**
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### **2. Diagnostic Analytics — Why did it happen?**  
+- Investigated differences between weekdays, holidays, and between districts.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### **3. Predictive Analytics — What will happen?**  
+- Forecasts next **6–12 months** using daily waste + holiday data  
+- Models used:
+  - Time Series  
+  - Linear Regression  
+  - Random Forest  
+  - Gradient Boosting  
+  - XGBoost
+
+### **4. Prescriptive Analytics — What should we do?**  
+- Suggested actions (e.g., increase collection fleets during holiday peaks)
+
+---
+
+## 🤖 Machine Learning Models & Performance
+
+| Model              | RMSE     | R²      |
+|--------------------|----------|---------|
+| Linear Regression  | 64.4013  | 0.0907  |
+| Random Forest      | 43.4670  | 0.5858  |
+| Gradient Boosting  | 37.1200  | 0.6979  |
+
+**Best Model:** Gradient Boosting  
+**Additional Model:** XGBoost applied to Ratchathewi district.
+
+---
+
+## 📌 Visual Analytics Layers
+
+- **L1:** Overview dashboards  
+- **L2:** Heatmap visualization  
+- **L3:** Linear Regression model  
+- **L4:** Random Forest model  
+- **L5:** Gradient Boosting & XGBoost  
+
+---
+
+## 👥 Team Members
+
+1. 65061447 — Smith Teepattana  
+2. 65039678 — Nakharat Photirat  
+3. 65042386 — Theepop Phetpiam  
+4. 65057974 — Oratchaporn Nakamon  
+
+---
+
+## 📄 License
+
+This project is for **educational and academic purposes**.  
+Feel free to fork and build upon it.
+
+---
+
+## 🙏 Acknowledgements
+
+Thank you for supporting the CLEAR STREET project — designed to help make Bangkok cleaner through data-driven waste management.
+
