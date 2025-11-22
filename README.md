@@ -112,7 +112,7 @@ Dataset includes **daily waste generation** from multiple Bangkok districts.
 
 ## 👥 Team Members
 
-1. 65061447 — Smith Teepattana  
+1. 65061447 — Smith Dipratna
 2. 65039678 — Nakharat Photirat  
 3. 65042386 — Theepop Phetpiam  
 4. 65057974 — Oratchaporn Nakamon  
