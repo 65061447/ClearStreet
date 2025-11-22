@@ -44,7 +44,7 @@ Dataset includes **daily waste generation** from multiple Bangkok districts.
 
 **Details:**
 - **Rows:** 182,651  
-- **Columns:** 8  
+- **Columns:** 58  
 - Includes daily average waste, variance, adjusted waste, district info, etc.
 
 **Sources:**
@@ -107,10 +107,6 @@ Dataset includes **daily waste generation** from multiple Bangkok districts.
 ## 📌 Visual Analytics Layers
 
 - **L1:** Overview dashboards  
-- **L2:** Heatmap visualization  
-- **L3:** Linear Regression model  
-- **L4:** Random Forest model  
-- **L5:** Gradient Boosting & XGBoost  
 
 ---
 
