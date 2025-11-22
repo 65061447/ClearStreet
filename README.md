@@ -1,8 +1,8 @@
-# Welcome to your Lovable project
+# Welcome to My Smart City Project
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/f58fc2b7-83be-41bc-af87-2aa0401ba43a
+**URL**: https://65061447.github.io/ClearStreet/
 
 ## How can I edit this code?
 
