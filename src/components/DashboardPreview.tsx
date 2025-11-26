@@ -14,26 +14,66 @@ export const DashboardPreview = () => {
   const [totalWaste, setTotalWaste] = useState<number>(0);
   const [dailyAvg, setDailyAvg] = useState<number>(0);
 
-const districts = [
-  "Bang Bon", "Bang Kapi", "Bang Kho Laem", "Bang Khen", "Bang Khun Thian",
-  "Bang Na", "Bang Phlat", "Bang Rak", "Bang Sue", "Bangkok Noi",
-  "Bangkok Yai", "Bueng Kum", "Chatuchak", "Chom Thong", "Din Daeng",
-  "Don Mueang", "Dusit", "Huai Khwang", "Khlong Sam Wa", "Khlong San",
-  "Khlong Toei", "Lat Krabang", "Lat Phrao", "Ladprao", "Min Buri",
-  "Nong Chok", "Pathum Wan", "Phasi Charoen", "Phaya Thai", "Phra Khanong",
-  "Phra Nakhon", "Pom Prap Sattru Phai", "Prawet", "Rat Burana", "Ratchathewi",
-  "Sai Mai", "Samphanthawong", "Saphan Sung", "Sathon", "Suan Luang",
-  "Taling Chan", "Thawi Watthana", "Thon Buri", "Thung Khru", "Wang Thonglang",
-  "Watthana", "Yan Nawa", "Bang Khun Phrom", "Bang Chan", "Khan Na Yao"
-].sort(); // alphabetically sort
+  const districts = [
+    "Bang Bon",
+    "Bang Khae",
+    "Bang Kapi",
+    "Bang Kho Laem",
+    "Bang Khen",
+    "Bang Khun Thian",
+    "Bang Na",
+    "Bang Phlat",
+    "Bang Rak",
+    "Bang Sue",
+    "Bangkok Noi",
+    "Bangkok Yai",
+    "Bueng Kum",
+    "Chatuchak",
+    "Chom Thong",
+    "Din Daeng",
+    "Don Mueang",
+    "Dusit",
+    "Huai Khwang",
+    "Khan Na Yao",
+    "Khlong Sam Wa",
+    "Khlong San",
+    "Khlong Toei",
+    "Lak Si",
+    "Lat Krabang",
+    "Lat Phrao",
+    "Min Buri",
+    "Nong Chok",
+    "Nong Khaem",
+    "Pathum Wan",
+    "Phasi Charoen",
+    "Phaya Thai",
+    "Phra Khanong",
+    "Phra Nakhon",
+    "Pom Prap Sattru Phai",
+    "Prawet",
+    "Rat Burana",
+    "Ratchathewi",
+    "Sai Mai",
+    "Samphanthawong",
+    "Saphan Sung",
+    "Sathon",
+    "Suan Luang",
+    "Taling Chan",
+    "Thawi Watthana",
+    "Thon Buri",
+    "Thung Khru",
+    "Wang Thonglang",
+    "Watthana",
+    "Yan Nawa"
+  ].sort();
 
-
-  const years = ["2025","2024","2023","2022","2021"];
-  const months = Array.from({length:12}, (_,i)=>String(i+1));
-  const days = Array.from({length:31}, (_,i)=>String(i+1));
+  // Years 2020 to 2029 in ascending order
+  const years = Array.from({ length: 10 }, (_, i) => (2020 + i).toString());
+  const months = Array.from({ length: 12 }, (_, i) => String(i + 1));
+  const days = Array.from({ length: 31 }, (_, i) => String(i + 1));
 
   const fetchPrediction = async () => {
-    if(!selectedDistrict || !selectedYear) return;
+    if (!selectedDistrict || !selectedYear) return;
     try {
       const res = await fetch("http://127.0.0.1:8000/predict", {
         method: "POST",
@@ -50,7 +90,7 @@ const districts = [
       setHistoricalData(data.historical_7day);
       setTotalWaste(data.total_waste_ton);
       setDailyAvg(data.daily_avg_ton);
-    } catch(err) {
+    } catch (err) {
       console.error(err);
     }
   };
@@ -80,7 +120,7 @@ const districts = [
 
         {/* Metrics Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          {metrics.map((metric, i)=>(
+          {metrics.map((metric, i) => (
             <Card key={i}>
               <CardContent className="pt-6">
                 <div className="flex items-center gap-3 mb-2">
@@ -103,9 +143,9 @@ const districts = [
               <div className="space-y-2">
                 <label className="text-sm font-medium">District</label>
                 <Select value={selectedDistrict} onValueChange={setSelectedDistrict}>
-                  <SelectTrigger><SelectValue placeholder="Select District"/></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder="Select District" /></SelectTrigger>
                   <SelectContent>
-                    {districts.map(d=>(
+                    {districts.map(d => (
                       <SelectItem key={d} value={d}>{d}</SelectItem>
                     ))}
                   </SelectContent>
@@ -115,9 +155,9 @@ const districts = [
               <div className="space-y-2">
                 <label className="text-sm font-medium">Year</label>
                 <Select value={selectedYear} onValueChange={setSelectedYear}>
-                  <SelectTrigger><SelectValue placeholder="Select Year"/></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder="Select Year" /></SelectTrigger>
                   <SelectContent>
-                    {years.map(y=> <SelectItem key={y} value={y}>{y}</SelectItem>)}
+                    {years.map(y => <SelectItem key={y} value={y}>{y}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
@@ -125,9 +165,9 @@ const districts = [
               <div className="space-y-2">
                 <label className="text-sm font-medium">Month</label>
                 <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-                  <SelectTrigger><SelectValue placeholder="Month"/></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder="Month" /></SelectTrigger>
                   <SelectContent>
-                    {months.map(m=> <SelectItem key={m} value={m}>{m}</SelectItem>)}
+                    {months.map(m => <SelectItem key={m} value={m}>{m}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
@@ -135,9 +175,9 @@ const districts = [
               <div className="space-y-2">
                 <label className="text-sm font-medium">Day</label>
                 <Select value={selectedDay} onValueChange={setSelectedDay}>
-                  <SelectTrigger><SelectValue placeholder="Day"/></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder="Day" /></SelectTrigger>
                   <SelectContent>
-                    {days.map(d=> <SelectItem key={d} value={d}>{d}</SelectItem>)}
+                    {days.map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
@@ -154,8 +194,8 @@ const districts = [
             <CardContent>
               <p className="mb-4">Starting from {selectedDay}/{selectedMonth}/{selectedYear}</p>
               <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={predictionData.map((p,i)=>({
-                  day: `Day ${i+1}`,
+                <LineChart data={predictionData.map((p, i) => ({
+                  day: `Day ${i + 1}`,
                   predicted: p.predicted,
                   historical: historicalData[i]?.predicted ?? 0
                 }))}>

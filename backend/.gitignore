@@ -18,7 +18,7 @@ node_modules/
 # Ignore environment files
 .env
 
-# Ignore trained models
+# # Ignore trained models
 backend/random_forest_reg_model.pkl
 
 # Ignore training column info
