@@ -1,50 +1,68 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart3, PieChart, TrendingUp, MapPin } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
 export const DashboardPreview = () => {
   const [selectedDistrict, setSelectedDistrict] = useState<string>("");
   const [selectedYear, setSelectedYear] = useState<string>("");
+  const [selectedMonth, setSelectedMonth] = useState<string>("1");
+  const [selectedDay, setSelectedDay] = useState<string>("1");
+  const [predictionData, setPredictionData] = useState<any[]>([]);
+  const [historicalData, setHistoricalData] = useState<any[]>([]);
+  const [totalWaste, setTotalWaste] = useState<number>(0);
+  const [dailyAvg, setDailyAvg] = useState<number>(0);
 
-  const districts = [
-    "เขตบางกอกน้อย",
-    "เขตพระนคร",
-    "เขตบางกอกใหญ่",
-    "เขตคลองสาน",
-    "เขตธนบุรี",
-    "เขตบางรัก",
-    "เขตปทุมวัน",
-    "เขตสาทร"
-  ];
+const districts = [
+  "Bang Bon", "Bang Kapi", "Bang Kho Laem", "Bang Khen", "Bang Khun Thian",
+  "Bang Na", "Bang Phlat", "Bang Rak", "Bang Sue", "Bangkok Noi",
+  "Bangkok Yai", "Bueng Kum", "Chatuchak", "Chom Thong", "Din Daeng",
+  "Don Mueang", "Dusit", "Huai Khwang", "Khlong Sam Wa", "Khlong San",
+  "Khlong Toei", "Lat Krabang", "Lat Phrao", "Ladprao", "Min Buri",
+  "Nong Chok", "Pathum Wan", "Phasi Charoen", "Phaya Thai", "Phra Khanong",
+  "Phra Nakhon", "Pom Prap Sattru Phai", "Prawet", "Rat Burana", "Ratchathewi",
+  "Sai Mai", "Samphanthawong", "Saphan Sung", "Sathon", "Suan Luang",
+  "Taling Chan", "Thawi Watthana", "Thon Buri", "Thung Khru", "Wang Thonglang",
+  "Watthana", "Yan Nawa", "Bang Khun Phrom", "Bang Chan", "Khan Na Yao"
+].sort(); // alphabetically sort
 
-  const years = ["2024", "2023", "2022", "2021", "2020"];
 
-  const topDistricts = [
-    { name: "เขตบางกอกน้อย", value: "1,371,330", rank: 1 },
-    { name: "เขตพระนคร", value: "1,177,848", rank: 2 },
-    { name: "เขตบางกอกใหญ่", value: "1,120,213", rank: 3 },
-    { name: "เขตคลองสาน", value: "1,100,763", rank: 4 },
-    { name: "เขตธนบุรี", value: "1,016,723", rank: 5 }
-  ];
+  const years = ["2025","2024","2023","2022","2021"];
+  const months = Array.from({length:12}, (_,i)=>String(i+1));
+  const days = Array.from({length:31}, (_,i)=>String(i+1));
 
-  // Generate 7-day prediction data
-  const generatePredictionData = () => {
-    const baseValue = Math.floor(Math.random() * 50000) + 150000;
-    return Array.from({ length: 7 }, (_, i) => ({
-      day: `Day ${i + 1}`,
-      predicted: Math.floor(baseValue + Math.random() * 20000 - 10000),
-      historical: Math.floor(baseValue + Math.random() * 15000 - 7500)
-    }));
+  const fetchPrediction = async () => {
+    if(!selectedDistrict || !selectedYear) return;
+    try {
+      const res = await fetch("http://127.0.0.1:8000/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          district: selectedDistrict,
+          year: parseInt(selectedYear),
+          month: parseInt(selectedMonth),
+          day: parseInt(selectedDay)
+        })
+      });
+      const data = await res.json();
+      setPredictionData(data.prediction_7day);
+      setHistoricalData(data.historical_7day);
+      setTotalWaste(data.total_waste_ton);
+      setDailyAvg(data.daily_avg_ton);
+    } catch(err) {
+      console.error(err);
+    }
   };
 
-  const predictionData = generatePredictionData();
+  useEffect(() => {
+    fetchPrediction();
+  }, [selectedDistrict, selectedYear, selectedMonth, selectedDay]);
 
   const metrics = [
-    { label: "Total Waste", value: "34.5M", icon: BarChart3, color: "text-primary" },
-    { label: "Districts", value: "50", icon: MapPin, color: "text-secondary" },
-    { label: "Daily Average", value: "196.4K", icon: TrendingUp, color: "text-success" },
+    { label: "Total Waste (Ton)", value: totalWaste.toFixed(2), icon: BarChart3, color: "text-primary" },
+    { label: "Districts", value: districts.length.toString(), icon: MapPin, color: "text-secondary" },
+    { label: "Daily Average (Ton)", value: dailyAvg.toFixed(2), icon: TrendingUp, color: "text-success" },
     { label: "Predictions", value: "Active", icon: PieChart, color: "text-warning" }
   ];
 
@@ -59,135 +77,100 @@ export const DashboardPreview = () => {
             ภาพรวมข้อมูลและการวิเคราะห์
           </p>
         </div>
-        
-        <div className="max-w-6xl mx-auto space-y-6">
-          {/* Metrics Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {metrics.map((metric, index) => (
-              <Card key={index} className="shadow-card">
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-3 mb-2">
-                    <metric.icon className={`h-5 w-5 ${metric.color}`} />
-                    <p className="text-sm text-muted-foreground">{metric.label}</p>
-                  </div>
-                  <p className="text-2xl font-bold text-card-foreground">{metric.value}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
 
-          {/* Top Districts */}
-          <Card className="shadow-card">
-            <CardHeader>
-              <CardTitle>Top Districts by Waste Volume</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {topDistricts.map((district) => (
-                  <div key={district.rank} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">
-                        {district.rank}
-                      </div>
-                      <span className="font-medium text-card-foreground">{district.name}</span>
-                    </div>
-                    <span className="text-lg font-bold text-primary">{district.value}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Prediction Filters */}
-          <Card className="shadow-card">
-            <CardHeader>
-              <CardTitle>7-Day Waste Prediction</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">Select District</label>
-                  <Select value={selectedDistrict} onValueChange={setSelectedDistrict}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Choose a district" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {districts.map((district) => (
-                        <SelectItem key={district} value={district}>
-                          {district}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+        {/* Metrics Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          {metrics.map((metric, i)=>(
+            <Card key={i}>
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <metric.icon className={`h-5 w-5 ${metric.color}`} />
+                  <p className="text-sm text-muted-foreground">{metric.label}</p>
                 </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">Select Year</label>
-                  <Select value={selectedYear} onValueChange={setSelectedYear}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Choose a year" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {years.map((year) => (
-                        <SelectItem key={year} value={year}>
-                          {year}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              {selectedDistrict && selectedYear ? (
-                <div className="space-y-4">
-                  <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
-                    <p className="text-sm text-foreground">
-                      Showing predictions for <span className="font-bold text-primary">{selectedDistrict}</span> in <span className="font-bold text-primary">{selectedYear}</span>
-                    </p>
-                  </div>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <LineChart data={predictionData}>
-                      <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                      <XAxis dataKey="day" className="text-xs" />
-                      <YAxis className="text-xs" />
-                      <Tooltip 
-                        contentStyle={{ 
-                          backgroundColor: "hsl(var(--card))", 
-                          border: "1px solid hsl(var(--border))",
-                          borderRadius: "8px"
-                        }}
-                      />
-                      <Legend />
-                      <Line 
-                        type="monotone" 
-                        dataKey="predicted" 
-                        stroke="hsl(var(--primary))" 
-                        strokeWidth={2}
-                        name="Predicted Waste (kg)"
-                      />
-                      <Line 
-                        type="monotone" 
-                        dataKey="historical" 
-                        stroke="hsl(var(--secondary))" 
-                        strokeWidth={2}
-                        strokeDasharray="5 5"
-                        name="Historical Average (kg)"
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-              ) : (
-                <div className="h-64 bg-gradient-to-br from-primary/5 to-secondary/5 rounded-lg flex items-center justify-center">
-                  <div className="text-center">
-                    <BarChart3 className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                    <p className="text-muted-foreground">Select a district and year to view predictions</p>
-                    <p className="text-sm text-muted-foreground">7-day waste volume forecast</p>
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                <p className="text-2xl font-bold">{metric.value}</p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
+
+        {/* Filters Card */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Select District & Date</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">District</label>
+                <Select value={selectedDistrict} onValueChange={setSelectedDistrict}>
+                  <SelectTrigger><SelectValue placeholder="Select District"/></SelectTrigger>
+                  <SelectContent>
+                    {districts.map(d=>(
+                      <SelectItem key={d} value={d}>{d}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Year</label>
+                <Select value={selectedYear} onValueChange={setSelectedYear}>
+                  <SelectTrigger><SelectValue placeholder="Select Year"/></SelectTrigger>
+                  <SelectContent>
+                    {years.map(y=> <SelectItem key={y} value={y}>{y}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Month</label>
+                <Select value={selectedMonth} onValueChange={setSelectedMonth}>
+                  <SelectTrigger><SelectValue placeholder="Month"/></SelectTrigger>
+                  <SelectContent>
+                    {months.map(m=> <SelectItem key={m} value={m}>{m}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Day</label>
+                <Select value={selectedDay} onValueChange={setSelectedDay}>
+                  <SelectTrigger><SelectValue placeholder="Day"/></SelectTrigger>
+                  <SelectContent>
+                    {days.map(d=> <SelectItem key={d} value={d}>{d}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Prediction Card */}
+        {selectedDistrict && selectedYear && predictionData.length > 0 && (
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle>7-Day Waste Prediction for {selectedDistrict}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="mb-4">Starting from {selectedDay}/{selectedMonth}/{selectedYear}</p>
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={predictionData.map((p,i)=>({
+                  day: `Day ${i+1}`,
+                  predicted: p.predicted,
+                  historical: historicalData[i]?.predicted ?? 0
+                }))}>
+                  <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                  <XAxis dataKey="day" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line type="monotone" dataKey="predicted" stroke="hsl(var(--primary))" name="Predicted Waste (Ton)" />
+                  <Line type="monotone" dataKey="historical" stroke="hsl(var(--secondary))" name="Historical Last Year (Ton)" strokeDasharray="5 5" />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </section>
   );
