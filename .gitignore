@@ -22,3 +22,29 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Python compiled files
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+env/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# Node modules (frontend)
+node_modules/
+
+# Model files
+backend/random_forest_reg_model.pkl
+
+# Training columns info
+backend/X_train_columns.pkl
+
+# Reference CSV
+backend/df_waste_reference.csv
