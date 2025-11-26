@@ -1,28 +1,25 @@
-# Ignore Python compiled files
+# Python compiled files
 __pycache__/
 *.pyc
 
-# Ignore virtual environment
+# Virtual environments
 venv/
 env/
 
-# Ignore model file
-backend/random_forest_reg_model.pkl
-
-# Ignore logs
+# Logs
 *.log
 
-# Ignore node modules (frontend)
-node_modules/
-
-# Ignore environment files
+# Environment variables
 .env
 
-# # Ignore trained models
+# Node modules (frontend)
+node_modules/
+
+# Model files
 backend/random_forest_reg_model.pkl
 
-# Ignore training column info
+# Training columns info
 backend/X_train_columns.pkl
 
-# Ignore reference CSV
+# Reference CSV
 backend/df_waste_reference.csv
