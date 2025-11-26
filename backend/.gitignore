@@ -17,3 +17,12 @@ node_modules/
 
 # Ignore environment files
 .env
+
+# Ignore trained models
+backend/random_forest_reg_model.pkl
+
+# Ignore training column info
+backend/X_train_columns.pkl
+
+# Ignore reference CSV
+backend/df_waste_reference.csv
