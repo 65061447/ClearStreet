@@ -27,15 +27,15 @@ export const Hero = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" variant="secondary" className="shadow-elevated" asChild>
-              <a href="#dashboard">
+              <Link to="/predictions">
                 <BarChart3 className="mr-2 h-5 w-5" />
-                View Dashboard
-              </a>
+                Daily Waste Prediction
+              </Link>
             </Button>
             <Button size="lg" variant="outline" className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20" asChild>
               <Link to="/analytics">
                 <TrendingUp className="mr-2 h-5 w-5" />
-                Analytics
+                Yearly Analytics
               </Link>
             </Button>
           </div>
