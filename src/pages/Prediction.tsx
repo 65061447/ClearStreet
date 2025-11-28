@@ -154,7 +154,7 @@ export const Predictions = () => {
                             <Button
                                 onClick={fetchPrediction}
                                 disabled={!selectedDistrict || !selectedYear}
-                                className="mt-4 w-full md:w-[40%] mx-auto bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
+                                className="mt-4 w-auto md:w-40 bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
                             >
                                 <BarChart3 className="w-5 h-5" />
                                 Predict

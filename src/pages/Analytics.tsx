@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, MapPin, Calendar, ArrowLeft } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -29,6 +29,7 @@ const Analytics = () => {
   // Years from 2020 to 2029
   const years = Array.from({ length: 10 }, (_, i) => 2020 + i);
 
+  // Fetch prediction when button is clicked
   const fetchPrediction = async () => {
     if (!selectedDistrict || !selectedYear) return;
     setLoading(true);
@@ -40,15 +41,11 @@ const Analytics = () => {
       setPrediction(res.data);
     } catch (err) {
       console.error(err);
+      alert("Error fetching prediction. Check console.");
     } finally {
       setLoading(false);
     }
   };
-
-  // Fetch prediction whenever district or year changes
-  useEffect(() => {
-    fetchPrediction();
-  }, [selectedDistrict, selectedYear]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -79,6 +76,7 @@ const Analytics = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* District */}
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-foreground flex items-center gap-2">
                       <MapPin className="h-4 w-4 text-primary" />
@@ -89,13 +87,12 @@ const Analytics = () => {
                         <SelectValue placeholder="Select district" />
                       </SelectTrigger>
                       <SelectContent>
-                        {districts.map(d => (
-                          <SelectItem key={d} value={d}>{d}</SelectItem>
-                        ))}
+                        {districts.map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}
                       </SelectContent>
                     </Select>
                   </div>
 
+                  {/* Year */}
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-foreground flex items-center gap-2">
                       <Calendar className="h-4 w-4 text-primary" />
@@ -106,22 +103,25 @@ const Analytics = () => {
                         <SelectValue placeholder="Select year" />
                       </SelectTrigger>
                       <SelectContent>
-                        {years.map(y => (
-                          <SelectItem key={y} value={y.toString()}>{y}</SelectItem>
-                        ))}
+                        {years.map(y => <SelectItem key={y} value={y.toString()}>{y}</SelectItem>)}
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
+
+                {/* Predict Button */}
+                <Button
+                  onClick={fetchPrediction}
+                  disabled={!selectedDistrict || !selectedYear || loading}
+                  className="mt-4 w-auto md:w-40 bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
+                >
+                  {loading ? "Predicting..." : "Predict"}
+                </Button>
               </CardContent>
             </Card>
 
             {/* Prediction Card */}
-            {loading ? (
-              <Card className="shadow-card py-12 text-center">
-                <p>Loading...</p>
-              </Card>
-            ) : prediction ? (
+            {prediction ? (
               <Card className="shadow-card border-primary/20">
                 <CardHeader className="bg-gradient-to-r from-primary/10 to-secondary/10">
                   <CardTitle className="text-center">
@@ -139,7 +139,6 @@ const Analytics = () => {
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">ค่าเฉลี่ยต่อวัน</p>
                   </div>
-
                   <div className="p-4 rounded-lg bg-secondary/5 border border-secondary/20">
                     <p className="text-sm text-muted-foreground mb-1">Monthly Total</p>
                     <p className="text-2xl font-bold text-secondary">
@@ -147,7 +146,6 @@ const Analytics = () => {
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">รวมต่อเดือน</p>
                   </div>
-
                   <div className="p-4 rounded-lg bg-accent/5 border border-accent/20">
                     <p className="text-sm text-muted-foreground mb-1">Weekday Average</p>
                     <p className="text-2xl font-bold text-foreground">
@@ -155,7 +153,6 @@ const Analytics = () => {
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">เฉลี่ยวันธรรมดา</p>
                   </div>
-
                   <div className="p-4 rounded-lg bg-warning/5 border border-warning/20">
                     <p className="text-sm text-muted-foreground mb-1">Weekend Average</p>
                     <p className="text-2xl font-bold text-foreground">
@@ -163,7 +160,6 @@ const Analytics = () => {
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">เฉลี่ยวันหยุด</p>
                   </div>
-
                   <div className="p-4 rounded-lg bg-success/5 border border-success/20">
                     <p className="text-sm text-muted-foreground mb-1">Peak Day</p>
                     <p className="text-2xl font-bold text-success">
@@ -171,7 +167,6 @@ const Analytics = () => {
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">วันที่มากที่สุด</p>
                   </div>
-
                   <div className="p-4 rounded-lg bg-muted/50 border border-border">
                     <p className="text-sm text-muted-foreground mb-1">Lowest Day</p>
                     <p className="text-2xl font-bold text-foreground">
@@ -179,7 +174,6 @@ const Analytics = () => {
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">วันที่น้อยที่สุด</p>
                   </div>
-
                   <div className="mt-6 p-4 rounded-lg bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 col-span-full">
                     <p className="text-sm text-muted-foreground mb-2">Yearly Projection</p>
                     <p className="text-3xl font-bold text-primary">
