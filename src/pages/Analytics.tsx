@@ -61,7 +61,7 @@ const Analytics = () => {
               Back to Home
             </Button>
           </Link>
-          <h1 className="text-3xl md:text-4xl font-bold">Predictive Analytics</h1>
+          <h1 className="text-3xl md:text-4xl font-bold">Yearly Waste Prediction</h1>
           <p className="text-white/90 mt-2">การทำนายปริมาณขยะรายปี - Yearly Waste Prediction</p>
         </div>
       </header>
@@ -128,7 +128,7 @@ const Analytics = () => {
                     Prediction Results for {selectedDistrict} ({selectedYear})
                   </CardTitle>
                   <p className="text-center text-sm text-muted-foreground">
-                    ผลการทำนายปริมาณขยะรายวัน
+                    ภาพรวมผลการทำนายปริมาณขยะรายปี
                   </p>
                 </CardHeader>
                 <CardContent className="pt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
