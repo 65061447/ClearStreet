@@ -13,18 +13,15 @@ const Analytics = () => {
   const [loading, setLoading] = useState(false);
 
   // Districts sorted alphabetically
-  const districts = [
-    "Bang Bon", "Bang Kapi", "Bang Kho Laem", "Bang Khen", "Bang Khun Thian",
-    "Bang Na", "Bang Phlat", "Bang Rak", "Bang Sue", "Bangkok Noi",
-    "Bangkok Yai", "Bueng Kum", "Chatuchak", "Chom Thong", "Din Daeng",
-    "Don Mueang", "Dusit", "Huai Khwang", "Khlong Sam Wa", "Khlong San",
-    "Khlong Toei", "Lat Krabang", "Lat Phrao", "Ladprao", "Min Buri",
-    "Nong Chok", "Pathum Wan", "Phasi Charoen", "Phaya Thai", "Phra Khanong",
-    "Phra Nakhon", "Pom Prap Sattru Phai", "Prawet", "Rat Burana", "Ratchathewi",
-    "Sai Mai", "Samphanthawong", "Saphan Sung", "Sathon", "Suan Luang",
-    "Taling Chan", "Thawi Watthana", "Thon Buri", "Thung Khru", "Wang Thonglang",
-    "Watthana", "Yan Nawa", "Bang Khun Phrom", "Bang Chan", "Khan Na Yao"
-  ].sort();
+ const districts = [
+        "Bang Bon", "Bang Khae", "Bang Kapi", "Bang Kho Laem", "Bang Khen", "Bang Khun Thian", "Bang Na", "Bang Phlat",
+        "Bang Rak", "Bang Sue", "Bangkok Noi", "Bangkok Yai", "Bueng Kum", "Chatuchak", "Chom Thong", "Din Daeng",
+        "Don Mueang", "Dusit", "Huai Khwang", "Khan Na Yao", "Khlong Sam Wa", "Khlong San", "Khlong Toei", "Lak Si",
+        "Lat Krabang", "Lat Phrao", "Min Buri", "Nong Chok", "Nong Khaem", "Pathum Wan", "Phasi Charoen", "Phaya Thai",
+        "Phra Khanong", "Phra Nakhon", "Pom Prap Sattru Phai", "Prawet", "Rat Burana", "Ratchathewi", "Sai Mai",
+        "Samphanthawong", "Saphan Sung", "Sathon", "Suan Luang", "Taling Chan", "Thawi Watthana", "Thon Buri", "Thung Khru",
+        "Wang Thonglang", "Watthana", "Yan Nawa"
+    ].sort();
 
   // Years from 2020 to 2029
   const years = Array.from({ length: 10 }, (_, i) => 2020 + i);
